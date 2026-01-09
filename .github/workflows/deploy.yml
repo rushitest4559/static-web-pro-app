@@ -18,7 +18,6 @@ jobs:
         az storage blob upload-batch \
          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} \
          --destination '$web' \
-         --source . \
+         --source ./site \
          --overwrite \
-         --exclude-path ".git .github" \
          --auth-mode login
