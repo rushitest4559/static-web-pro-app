@@ -19,5 +19,6 @@ jobs:
          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} \
          --destination '$web' \
          --source . \
-         --overwrite
-         --exclude-path ".git .github"
+         --overwrite \
+         --exclude-path ".git .github" \
+         --auth-mode login
