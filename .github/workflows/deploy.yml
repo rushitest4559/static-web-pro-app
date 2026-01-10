@@ -30,6 +30,7 @@ jobs:
           --destination '$web' \
           --source ./site \
           --overwrite 
+          --auth-mode login
 
 
   deploy-stage:
@@ -55,6 +56,7 @@ jobs:
           --destination '$web' \
           --source ./site \
           --overwrite 
+          --auth-mode login
 
 
   deploy-prod:
@@ -80,3 +82,4 @@ jobs:
           --destination '$web' \
           --source ./site \
           --overwrite 
+          --auth-mode login
