@@ -29,7 +29,7 @@ jobs:
           --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_DEV }} \
           --destination '$web' \
           --source ./site \
-          --overwrite 
+          --overwrite \
           --auth-mode login
 
 
@@ -55,7 +55,7 @@ jobs:
           --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_STAGE }} \
           --destination '$web' \
           --source ./site \
-          --overwrite 
+          --overwrite \
           --auth-mode login
 
 
@@ -81,5 +81,5 @@ jobs:
           --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_PROD }} \
           --destination '$web' \
           --source ./site \
-          --overwrite 
+          --overwrite \
           --auth-mode login
