@@ -30,7 +30,7 @@ jobs:
       - name: Deploy to DEV
         run: |
           az storage blob upload-batch \
-            --account-name staticsitesadev \
+            --account-name rushistaticsitesadev \
             -s ./site \
             -d '$web'
 
@@ -38,7 +38,7 @@ jobs:
       - name: Deploy to STAGE
         run: |
           az storage blob upload-batch \
-            --account-name staticsitesastage \
+            --account-name rushistaticsitesastage \
             -s ./site \
             -d '$web'
 
@@ -46,6 +46,6 @@ jobs:
       - name: Deploy to PROD
         run: |
           az storage blob upload-batch \
-            --account-name staticsitesaprod \
+            --account-name rushistaticsitesaprod \
             -s ./site \
             -d '$web'
