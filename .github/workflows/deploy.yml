@@ -32,7 +32,8 @@ jobs:
           az storage blob upload-batch \
             --account-name rushistaticsitesadev \
             -s ./site \
-            -d '$web'
+            -d '$web' \
+            --auth-mode login \
             --overwrite
 
       # Upload to STAGE
@@ -41,7 +42,8 @@ jobs:
           az storage blob upload-batch \
             --account-name rushistaticsitesastage \
             -s ./site \
-            -d '$web'
+            -d '$web' \
+            --auth-mode login \
             --overwrite
 
       # Upload to PROD
@@ -50,5 +52,6 @@ jobs:
           az storage blob upload-batch \
             --account-name rushistaticsitesaprod \
             -s ./site \
-            -d '$web'
+            -d '$web' \
+            --auth-mode login \
             --overwrite
