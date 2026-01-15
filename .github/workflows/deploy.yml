@@ -1,85 +1,51 @@
-name: Deploy Static Website to Azure
+name: Deploy Static Website
+
 on:
   push:
     branches:
-      main
+      - main
 
 permissions:
-  id-token: write
+  id-token: write   # for OIDC
   contents: read
 
 jobs:
-  deploy-dev:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    
-    - uses: actions/checkout@v4
-    
-    - name: Azure login (OIDC)
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # Checkout repo
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: upload to DEV
-      run: |
-        az storage blob upload-batch \
-          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_DEV }} \
-          --destination '$web' \
-          --source ./site \
-          --overwrite \
-          --auth-mode login
+      # Login to Azure using federated credentials
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      # Upload to DEV
+      - name: Deploy to DEV
+        run: |
+          az storage blob upload-batch \
+            --account-name staticsitesadev \
+            -s ./site \
+            -d '$web'
 
-  deploy-stage:
-    needs: deploy-dev
-    runs-on: ubuntu-latest
-    environment: stage
+      # Upload to STAGE
+      - name: Deploy to STAGE
+        run: |
+          az storage blob upload-batch \
+            --account-name staticsitesastage \
+            -s ./site \
+            -d '$web'
 
-    steps:
-    
-    - uses: actions/checkout@v4
-    
-    - name: Azure login (OIDC)
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-    - name: upload to STAGE
-      run: |
-        az storage blob upload-batch \
-          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_STAGE }} \
-          --destination '$web' \
-          --source ./site \
-          --overwrite \
-          --auth-mode login
-
-
-  deploy-prod:
-    needs: deploy-stage
-    runs-on: ubuntu-latest
-    environment: prod
-
-    steps:
-    
-    - uses: actions/checkout@v4
-    
-    - name: Azure login (OIDC)
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-    - name: upload to PROD
-      run: |
-        az storage blob upload-batch \
-          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME_PROD }} \
-          --destination '$web' \
-          --source ./site \
-          --overwrite \
-          --auth-mode login
+      # Upload to PROD
+      - name: Deploy to PROD
+        run: |
+          az storage blob upload-batch \
+            --account-name staticsitesaprod \
+            -s ./site \
+            -d '$web'
