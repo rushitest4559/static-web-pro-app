@@ -24,6 +24,7 @@ This repository contains a plain static website (**HTML, CSS, JS, images — no 
 1. Deploy to **DEV**
 2. Manual approval → Deploy to **STAGE**
 3. Manual approval → Deploy to **PROD**
+![Demo](./assets/cicd.mp4)
 
 ### Key Features
 
