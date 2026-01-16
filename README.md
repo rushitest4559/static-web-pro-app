@@ -1,73 +1,94 @@
-# Static Web Pro App
+# Static Web Pro – Application CI/CD
 
-This repository contains a plain static website (**HTML, CSS, JS, images — no React/Angular**) along with a **production-grade CI/CD pipeline** to deploy the site across **multiple Azure environments**.
+This repository contains the **static website application** and its **production-style CI/CD pipeline** for Azure, implemented using **GitHub Actions**.
+
+The pipeline deploys the application to **DEV → STAGE → PROD** with **manual approval gates** to demonstrate real-world release controls.
 
 ---
 
-## 🚀 What This Project Does
+## 🚀 What This Repository Does
 
-- Hosts a static website on **Azure Storage Static Website**
-- Deploys automatically to **DEV → STAGE → PROD**
-- Uses **GitHub Actions + Azure OIDC** (no secrets, no passwords)
-- Enforces **manual approval gates** between environments using **GitHub Environments**
+- Hosts static website source code
+- Builds and deploys the app via **GitHub Actions**
+- Deploys sequentially to:
+  - DEV
+  - STAGE
+  - PROD
+- Enforces **manual approvals** before higher environments
+- No manual deployment via Azure Portal
 
 ---
 
 ## 🔄 CI/CD Pipeline Overview
 
 ### Trigger
-
-- Push to `main` branch
-
-### Flow
-
-1. Deploy to **DEV**
-2. Manual approval → Deploy to **STAGE**
-3. Manual approval → Deploy to **PROD**
-![Demo](./assets/cicd.mp4)
-
-### Key Features
-
-- Azure authentication via **OIDC**
-- **Environment-specific** storage accounts
-- Sequential promotion using `needs`
-- Clean, simple deployment using  
-  `az storage blob upload-batch`
+- Push or merge to `main` branch
 
 ---
 
-## 🌐 Environments
+### Deployment Flow
 
-| Environment | URL |
-|------------|-----|
-| **DEV** | https://rushistaticsitesadev.z13.web.core.windows.net |
-| **STAGE** | https://rushistaticsitesastage.z13.web.core.windows.net |
-| **PROD** | https://rushistaticsitesaprod.z13.web.core.windows.net |
+1. **DEV Deployment**
+   - Automatic
+   - Used for early validation and testing
+
+2. **STAGE Deployment**
+   - Requires **manual approval**
+   - Simulates pre-production validation
+
+3. **PROD Deployment**
+   - Requires **manual approval**
+   - Represents controlled production release
+
+> This mirrors real-world CI/CD practices where production deployments are never fully automatic.
 
 ---
 
-## 🏗 Infrastructure
+## 🔐 Security Model
 
-All Azure infrastructure for this project is provisioned using **Terraform**.
+- No hardcoded secrets in repository
+- Authentication handled via **OIDC**
+- Access controlled using Azure Entra ID and RBAC
+- Environment protection rules enforce approvals
 
-👉 **Infra repository:**  
-https://github.com/rushitest4559/static-web-pro-infra
+---
+
+## 🏗 Environment Separation
+
+- DEV, STAGE, and PROD are isolated
+- Independent deployment steps per environment
+- Failures stop the pipeline from progressing further
+
+---
+
+## 🎥 Demo
+
+A full CI/CD demo video is available here:  
+🎥 Demo: https://youtu.be/5KblggFtBkI
+
+---
+
+## 🔗 Related Repository
+
+Infrastructure (Terraform + GitOps):  
+👉 https://github.com/rushitest4559/static-web-pro-infra
 
 ---
 
 ## 🛠 Tech Stack
 
-- Static **HTML / CSS / JS**
-- **GitHub Actions**
-- **Azure Storage (Static Website)**
-- **Azure OIDC Authentication**
-- **Terraform** (for infra)
+- Static Web Technologies (HTML / CSS / JS)
+- GitHub Actions
+- Azure Static Web Apps / Storage (depending on setup)
+- Azure Entra ID
+- OIDC Authentication
 
 ---
 
-## 📌 Next Plans
+## 🧠 Key Takeaway
 
-- Add rollback mechanism in CI/CD
-- Implement canary deployments
-- Replace manual approvals with automated tests
-- Add basic smoke & availability checks
+This project demonstrates **safe, production-style application delivery**:
+- Automated deployments
+- Manual approval gates
+- Clear separation between application and infrastructure
+- Git as the single source of truth
